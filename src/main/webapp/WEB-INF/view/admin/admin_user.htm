@@ -1,0 +1,102 @@
+<table id="user-datagrid" class="easyui-datagrid" title="用户列表"
+	data-options="url:'${contextPath}/admin/getUserList',toolbar:'#user-tb',fitColumns:true">
+	<thead>
+		<tr>
+			<th data-options="field:'username',width:80">
+				用户名
+			</th>
+			<th data-options="field:'email',width:100">
+				Email
+			</th>
+			<th data-options="field:'status',width:60,align:'center'">
+				状态
+			</th>
+		</tr>
+	</thead>
+</table>
+
+<div id="user-tb">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUser()">New User</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editUser()">Edit User</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyUser()">Remove User</a>
+</div>
+
+<div id="user-dialog" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
+            closed="true" buttons="#user-dialog-buttons">
+    <div class="ftitle">User Information</div>
+    <form id="user-form" method="post" novalidate>
+        <div class="fitem">
+            <label>Username:</label>
+            <input name="username" class="easyui-textbox" required="true">
+        </div>
+        <div class="fitem">
+            <label>Email:</label>
+            <input name="email" class="easyui-textbox" validType="email">
+        </div>
+        <div class="fitem">
+            <label>Status:</label>
+            <input name="status" class="easyui-textbox" >
+        </div>
+    </form>
+</div>
+<div id="user-dialog-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveUser()" style="width:90px">Save</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#user-dialog').dialog('close')" style="width:90px">Cancel</a>
+</div>
+<script type="text/javascript">
+
+    var url;
+    function newUser(){
+        $('#user-dialog').dialog('open').dialog('setTitle','New User');
+        $('#user-form').form('clear');
+        url = 'save_user.php';
+    }
+    function editUser(){
+        var row = $('#user-datagrid').datagrid('getSelected');
+        if (row){
+            $('#user-dialog').dialog('open').dialog('setTitle','Edit User');
+            $('#user-form').form('load',row);
+            url = 'update_user.php?id='+row.id;
+        }
+    }
+    function saveUser(){
+        $('#user-form').form('submit',{
+            url: url,
+            onSubmit: function(){
+                return $(this).form('validate');
+            },
+            success: function(result){
+                var result = eval('('+result+')');
+                if (result.errorMsg){
+                    $.messager.show({
+                        title: 'Error',
+                        msg: result.errorMsg
+                    });
+                } else {
+                    $('#user-dialog').dialog('close');        // close the dialog
+                    $('#user-datagrid').datagrid('reload');    // reload the user data
+                }
+            }
+        });
+    }
+    function destroyUser(){
+        var row = $('#user-datagrid').datagrid('getSelected');
+        if (row){
+            $.messager.confirm('Confirm','Are you sure you want to destroy this user?',function(r){
+                if (r){
+                    $.post('destroy_user.php',{id:row.id},function(result){
+                        if (result.success){
+                            $('#user-datagrid').datagrid('reload');    // reload the user data
+                        } else {
+                            $.messager.show({    // show error message
+                                title: 'Error',
+                                msg: result.errorMsg
+                            });
+                        }
+                    },'json');
+                }
+            });
+        }
+    }
+</script>
+

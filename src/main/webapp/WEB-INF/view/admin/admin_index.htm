@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>EasySpring</title>
+		<link rel="stylesheet" type="text/css"
+			href="${contextPath}/resources/easyui/themes/default/easyui.css">
+		<link rel="stylesheet" type="text/css" href="${contextPath}/resources/easyui/themes/icon.css">
+		<link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/global.css">
+		<link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/admin.css">
+		<script type="text/javascript" src="${contextPath}/resources/jquery.min.js"></script>
+		<script type="text/javascript" src="${contextPath}/resources/easyui/js/jquery.easyui.min.js"></script>
+	</head>
+	<body class="easyui-layout">
+        <div data-options="region:'north'" style="height:70px; text-align: center">
+        	<h1>EasySpring后台管理</h1>
+        </div>
+        <div data-options="region:'south',split:true" style="height:50px;"></div>
+        <div data-options="region:'west',split:true,title:'菜单栏',iconCls:'icon-ok'" style="width:250px;">
+            <div class="easyui-accordion" data-options="fit:true,border:false">
+                <div data-options="fit:true,collapsible:false" style="padding:10px;"><!-- 每一个div都是accordion中依赖的panel -->
+                	<ul class="westBar" id="admin">
+						<li id="adminUser">#menuIcon("icon-search")用户管理</li>
+					</ul>
+                </div>
+            </div>
+        </div>
+        <div data-options="region:'center',iconCls:'icon-ok'">
+            <div id="admin_tabs" class="easyui-tabs" data-options="fit:true,border:false,plain:true">
+            </div>
+        </div>
+		<script type="text/javascript">
+		$(function(){
+			$("ul.westBar li").on("click", function(){
+				$("ul.westBar li").removeClass('active');
+				$(this).addClass('active');
+				
+				var id = $(this).attr('id');
+				if($(this).hasClass('zdialog')){
+					$('#' + id + '-dialog').dialog('open');
+					return;
+				}
+				var title = $(this).text().replace(' ', '');
+				var parent = $(this).parent().attr('id');
+				addTabs(title,parent,$(this));
+			})
+		});
+		
+		function addTabs(title,parent,jq){
+			if($('#admin_tabs').tabs('exists',title)){
+				$('#admin_tabs').tabs('select',title);
+				return;
+			}
+			var id = jq.attr('id');
+			var iconCls = 'icon-ok';
+			if(jq.find("span").attr('class')){
+				iconCls = jq.find("span").attr('class');
+			}
+			$('#admin_tabs').tabs('add',{
+				title: title,
+				href: parent + '/' + id + "?cls=" + id,
+				iconCls: iconCls,
+				closable: true,
+				onBeforeLoad:function(param){
+					if(title == '报修中心'){
+						if($('#repairsPaper')[0]){
+							$('#repairsPaper').dialog('destroy', true);
+							$('#dispatchesPaper').dialog('destroy', true);
+							$('#verifyPaper').dialog('destroy', true);
+						}						
+					}
+				},
+				onLoadError:function(){
+					alert("页面加载出错，请联系管理员处理");
+				}
+			});
+		}
+		</script>
+	</body>
+</html>
