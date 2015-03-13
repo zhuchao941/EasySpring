@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>登录</title>
+		<link rel="stylesheet" type="text/css"
+			href="${contextPath}/resources/easyui/themes/default/easyui.css">
+		<link rel="stylesheet" type="text/css" href="${contextPath}/resources/easyui/themes/icon.css">
+		<link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/global.css">
+		<link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/login.css">
+		<script type="text/javascript" src="${contextPath}/resources/jquery.min.js"></script>
+		<script type="text/javascript" src="${contextPath}/resources/easyui/js/jquery.easyui.min.js"></script>
+	</head>
+	<body>
+		<div class="login-div">
+			<form id="login-form" action="login" method="post" class="easyui-form" data-options="novalidate:true, ajax:false">
+				<table align="center" cellpadding="10px">
+					<caption><h2>登录</h2></caption>
+					<tr>
+						<td colspan="2" class="error">$!{authticationError}</td>
+					</tr>
+					<tr>
+						<td>用户名：</td>
+						<td><input name="username" class="easyui-textbox" data-options="iconCls:'icon-man', required:true" style="width:300px"></td>
+					</tr>
+					<tr>
+						<td>密码：</td>
+						<td><input name="password" class="easyui-textbox" data-options="iconCls:'icon-lock'" style="width:300px"></td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<a class="easyui-linkbutton" data-options="iconCls:'icon-search', width:'50%'" onclick="login()">登录</a>
+							<a class="easyui-linkbutton" data-options="iconCls:'icon-search', width:'50%'" onclick="window.location.href = 'register'">注册</a>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			function login(){
+				$('#login-form').submit();
+			}
+		
+			$(function(){
+				
+			})
+		</script>
+	</body>
+</html>
