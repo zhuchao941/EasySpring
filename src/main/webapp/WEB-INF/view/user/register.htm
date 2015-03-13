@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>注册</title>
+		<link rel="stylesheet" type="text/css"
+			href="${contextPath}/resources/easyui/themes/default/easyui.css">
+		<link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/global.css">
+		<link rel="stylesheet" type="text/css" href="${contextPath}/resources/easyui/themes/icon.css">
+		<script type="text/javascript" src="${contextPath}/resources/jquery.min.js"></script>
+		<script type="text/javascript" src="${contextPath}/resources/easyui/js/jquery.easyui.min.js"></script>
+	</head>
+	<body>
+		<br/>
+		<form id="register-form" action="register" method="post">
+			##springBind("user.*")
+			##springShowErrors("<br/>" "color:red")
+			<table align="center" cellpadding="10px">
+				<caption><h2>注册</h2></caption>
+				<tr>
+					<td>用户名:</td>
+					<td>#springFormInput("user.username" "class='easyui-textbox' style='width:300px'")</td>
+					<td>#springShowErrors("" "color:red")</td>
+				</tr>
+				<tr>
+					<td>密码:</td>
+					<td>#springFormPasswordInput("user.password" "class='easyui-textbox' style='width:300px'")</td>
+					<td>#springShowErrors("" "color:red")</td>
+				</tr>
+				<tr>
+					<td>再次输入密码:</td>
+					<td>#springFormPasswordInput("user.password2" "class='easyui-textbox' style='width:300px'")</td>
+					<td>#springShowErrors("" "color:red")</td>
+				</tr>
+				<tr>
+					<td colspan="3">
+						<a class="easyui-linkbutton" data-options="iconCls:'icon-search', width:'100%'" onclick="register()">注册</a>
+					</td>
+				</tr>
+			</table>
+		</form>
+		<script type="text/javascript">
+			function register(){
+				$('#register-form').submit();
+			}
+		</script>
+	</body>
+</html>
