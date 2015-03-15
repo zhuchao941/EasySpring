@@ -21,6 +21,8 @@
                 <div data-options="fit:true,collapsible:false" style="padding:10px;"><!-- 每一个div都是accordion中依赖的panel -->
                 	<ul class="westBar" id="admin">
 						<li id="adminUser">#menuIcon("icon-search")用户管理</li>
+						<li id="adminRole">#menuIcon("icon-search")角色管理</li>
+						<li id="adminPermission">#menuIcon("icon-search")权限管理</li>
 					</ul>
                 </div>
             </div>
@@ -30,6 +32,8 @@
             </div>
         </div>
 		<script type="text/javascript">
+		var contextPath = "$!contextPath";
+		
 		$(function(){
 			$("ul.westBar li").on("click", function(){
 				$("ul.westBar li").removeClass('active');
@@ -40,25 +44,25 @@
 					$('#' + id + '-dialog').dialog('open');
 					return;
 				}
-				var title = $(this).text().replace(' ', '');
+				var id = $(this).attr('id');
+				var title = $(this).text();
+				var iconCls = $(this).find("span").attr('class');
 				var parent = $(this).parent().attr('id');
-				addTabs(title,parent,$(this));
+				addTabs(id, title, iconCls, parent);
 			})
 		});
 		
-		function addTabs(title,parent,jq){
+		function addTabs(id, title, iconCls, parent){
 			if($('#admin_tabs').tabs('exists',title)){
 				$('#admin_tabs').tabs('select',title);
 				return;
 			}
-			var id = jq.attr('id');
-			var iconCls = 'icon-ok';
-			if(jq.find("span").attr('class')){
-				iconCls = jq.find("span").attr('class');
+			if(!iconCls){
+				iconCls = 'icon-ok';
 			}
 			$('#admin_tabs').tabs('add',{
 				title: title,
-				href: parent + '/' + id + "?cls=" + id,
+				href: contextPath + '/' + parent + '/' + id,
 				iconCls: iconCls,
 				closable: true,
 				onBeforeLoad:function(param){
@@ -70,8 +74,14 @@
 						}						
 					}
 				},
-				onLoadError:function(){
-					alert("页面加载出错，请联系管理员处理");
+				onLoadError:function(data){
+					var tab = $('#admin_tabs').tabs('getSelected');
+					var body = tab.panel('body');
+					if(data.status == 401){
+						body.html(data.responseText)
+					}else{
+						body.html('<h1>加载出错</h1>');
+					}
 				}
 			});
 		}
