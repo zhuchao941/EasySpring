@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,6 +24,7 @@ public class AdminController extends BaseController {
 		return "admin/admin_index";
 	}
 
+	@RequiresRoles("admin")
 	@RequestMapping("/adminUser")
 	public String adminUser() {
 		return "admin/admin_user";
