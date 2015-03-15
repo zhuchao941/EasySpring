@@ -9,7 +9,7 @@
 		class="org.apache.shiro.authc.credential.DefaultPasswordService">
 		<property name="hashService" ref="hashService"></property>
 	</bean>
-	
+
 	<bean id="hashService" class="org.apache.shiro.crypto.hash.DefaultHashService">
 		<property name="hashAlgorithmName" value="md5"></property>
 		<property name="hashIterations" value="2"></property>
@@ -18,27 +18,34 @@
 		</property>
 	</bean>
 
-	<!-- 凭证匹配器 
-	<bean id="credentialsMatcher" class="com.zhu.prototype.shiro.credential.PlainPasswordMatcher">
-	</bean>-->
-	
+	<!-- 凭证匹配器 <bean id="credentialsMatcher" class="com.zhu.prototype.shiro.credential.PlainPasswordMatcher"> 
+		</bean> -->
+
 	<!-- 凭证匹配器 -->
 	<bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.PasswordMatcher">
 		<property name="passwordService" ref="passwordService"></property>
 	</bean>
 
-	<bean id="jdbcRealm" class="org.apache.shiro.realm.jdbc.JdbcRealm">
+	<!-- <bean id="jdbcRealm" class="org.apache.shiro.realm.jdbc.JdbcRealm">
 		<property name="credentialsMatcher" ref="credentialsMatcher"></property>
 		<property name="authenticationQuery" value="select password from user where username = ?"></property>
+		<property name="userRolesQuery"
+			value="select role_code from user_roles where username = ?"></property>
+		<property name="permissionsQuery"
+			value="select permission_code from roles_permissions where role_name = ?"></property>
 		<property name="dataSource" ref="dataSource"></property>
 		<property name="permissionsLookupEnabled" value="true"></property>
+	</bean> -->
+	
+	<bean id="userRealm" class="com.zhu.easyspring.shiro.realm.UserRealm">
+		<property name="credentialsMatcher" ref="credentialsMatcher"></property>
 	</bean>
-
+	
 	<!-- 安全管理器 -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<property name="realms">
 			<list>
-				<ref bean="jdbcRealm" />
+				<ref bean="userRealm" />
 			</list>
 		</property>
 	</bean>
@@ -59,13 +66,13 @@
 		<property name="loginUrl" value="/login" />
 		<property name="successUrl" value="/news/newsList"></property>
 	</bean>
-	
+
 	<bean id="logoutFilter" class="org.apache.shiro.web.filter.authc.LogoutFilter">
 		<property name="redirectUrl" value="/login"></property>
 	</bean>
-	
-	<bean id="sslFilter" class="org.apache.shiro.web.filter.authz.SslFilter">  
-	    <property name="port" value="8443"/>  
+
+	<bean id="sslFilter" class="org.apache.shiro.web.filter.authz.SslFilter">
+		<property name="port" value="8443" />
 	</bean>
 
 	<!-- Shiro的Web过滤器 -->
@@ -86,16 +93,16 @@
 				/resources/** = anon
 				/special/unauthorized = anon
 				/register = anon
-				
+
 				/login = authc
 				/logout = logout
-				
+
 				/** = user
-            </value>
+			</value>
 		</property>
 	</bean>
 
-	<!-- Shiro生命周期处理器-->
+	<!-- Shiro生命周期处理器 -->
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
 
 </beans>
