@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zhu.easyspring.dto.MenuBean;
 import com.zhu.easyspring.dto.UserPreferences;
+import com.zhu.easyspring.entity.Role;
 import com.zhu.easyspring.entity.User;
 import com.zhu.easyspring.service.UserService;
-import com.zhu.easyspring.velocity.bean.Datagrid;
 
 @Controller
 @RequestMapping("/admin")
@@ -35,7 +35,6 @@ public class AdminController extends BaseController {
 	@RequiresRoles("admin")
 	@RequestMapping("/adminUser")
 	public String adminUser(Model model) {
-		model.addAttribute("datagrid", new Datagrid());
 		return "admin/admin_test";
 	}
 
@@ -43,5 +42,16 @@ public class AdminController extends BaseController {
 	@ResponseBody
 	public List<User> getUserList(User user) {
 		return userService.getUserList();
+	}
+
+	@RequestMapping("/adminRole")
+	public String adminRole() {
+		return "admin/admin_role";
+	}
+
+	@RequestMapping("/getRoleList")
+	@ResponseBody
+	public List<Role> getRoleList() {
+		return userService.getRoleList();
 	}
 }
