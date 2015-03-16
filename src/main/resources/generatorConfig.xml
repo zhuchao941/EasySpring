@@ -5,7 +5,7 @@
 
 <generatorConfiguration>
 	<classPathEntry
-		location="C:\Users\Zhu\.m2\repository\mysql\mysql-connector-java\5.1.6\mysql-connector-java-5.1.6.jar" />
+		location="C:\Users\Administrator\.m2\repository\mysql\mysql-connector-java\5.1.6\mysql-connector-java-5.1.6.jar" />
 
 	<context id="MysqlTables" targetRuntime="MyBatis3">
 
@@ -43,7 +43,7 @@
 		</table>
 		<table tableName="role" domainObjectName="Role">
 		</table>
-		<table tableName="permission" domainObjectName="Permission">
+		<table tableName="resource" domainObjectName="Resource">
 		</table>
 
 	</context>
