@@ -14,6 +14,7 @@ import com.zhu.easyspring.dto.MenuBean;
 import com.zhu.easyspring.dto.UserPreferences;
 import com.zhu.easyspring.entity.User;
 import com.zhu.easyspring.service.UserService;
+import com.zhu.easyspring.velocity.bean.Datagrid;
 
 @Controller
 @RequestMapping("/admin")
@@ -33,8 +34,9 @@ public class AdminController extends BaseController {
 
 	@RequiresRoles("admin")
 	@RequestMapping("/adminUser")
-	public String adminUser() {
-		return "admin/admin_user";
+	public String adminUser(Model model) {
+		model.addAttribute("datagrid", new Datagrid());
+		return "admin/admin_test";
 	}
 
 	@RequestMapping("/getUserList")
