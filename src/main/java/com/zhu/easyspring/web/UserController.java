@@ -80,7 +80,7 @@ public class UserController extends BaseController {
 				.getUsername(), user.getPassword2());
 		subject.login(token);
 		buildUserPreferences(user, session);
-		return "redirect:news/newsList";
+		return "redirect:admin/adminIndex";
 	}
 
 	@ModelAttribute("user")
