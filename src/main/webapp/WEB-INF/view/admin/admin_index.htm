@@ -18,8 +18,9 @@
         <div data-options="region:'south',split:true" style="height:50px;"></div>
         <div data-options="region:'west',split:true,title:'菜单栏',iconCls:'icon-ok'" style="width:250px;">
             <div class="easyui-accordion" data-options="fit:true,border:false">
+            	#set($onlyone = $!menus.size())
             	#foreach($menu in $!menus)
-                <div data-options="fit:true,collapsible:false" style="padding:10px;"><!-- 每一个div都是accordion中依赖的panel -->
+                <div title="$!menu.head.name" data-options="#if($!onlyone == 1)fit:true,collapsible:false#end" style="padding:10px;"><!-- 每一个div都是accordion中依赖的panel -->
                 	<ul class="westBar" id="$!menu.head.code">
                 		#foreach($sub in $!menu.subMenus)
 						<li id="$!sub.code">#menuIcon("$!sub.icon")$!sub.name</li>
