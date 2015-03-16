@@ -15,4 +15,10 @@
 			</tr>
 		</thead>
 	</table>
+	
+	<div id="$!{datagrid.prefix}-tb">
+		#foreach($btn in $!{datagrid.tb.btns})
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="$!btn.dataoptions" onclick="$!{btn.fun}">$!btn.text</a>
+		#end
+	</div>
 #end
