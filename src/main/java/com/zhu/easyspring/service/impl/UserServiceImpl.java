@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
 			Role role = roleService.getRoleById(id);
 			if (roles == null) {
 				roles = new HashSet<String>();
-				roles.add(role.getName());
+				roles.add(role.getCode());
 			}
 		}
 		return roles;
@@ -142,7 +142,7 @@ public class UserServiceImpl implements UserService {
 					} else if (resource.getType().equals(
 							ResourceType.Menu.toString())) {
 						MenuBean menu = menusMap.get(resource.getParent());
-						if(menu == null){
+						if (menu == null) {
 							continue;
 						}
 						if (menu.getSubMenus() == null) {
@@ -154,6 +154,11 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 		return menus;
+	}
+
+	@Override
+	public List<Role> getRoleList() {
+		return roleService.getRoleList();
 	}
 
 }
