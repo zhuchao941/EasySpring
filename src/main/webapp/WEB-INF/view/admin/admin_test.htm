@@ -1,2 +1,2 @@
-$!datagrid.setPrefix("user").setTitle("用户列表").setDataoptions("url:'$!{contextPath}/admin/getUserList',fitColumns:true").addField("username","field:'username',width:80").addField("email","field:'email',width:80").addField("status","field:'status',width:80")
+$!datagrid.setPrefix("user").setTitle("用户列表").setDataoptions("url:'$!{contextPath}/admin/getUserList',fitColumns:true,toolbar:'#user-tb'").addField("用户名","field:'username',width:80").addField("邮箱","field:'email',width:80").addField("状态","field:'status',width:80").addField("角色","field:'roleIds',width:80").tb.addBtn("新增用户","iconCls:'icon-add'","addUser()").addBtn("编辑用户","iconCls:'icon-edit'","editUser()").addBtn("删除用户","iconCls:'icon-del'","delUser()")
 #datagrid($!datagrid)
