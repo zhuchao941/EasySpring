@@ -8,4 +8,6 @@ public interface RoleService {
 	public Role getRoleById(Integer id);
 	
 	public List<Role> getRoleList(Integer[] roleIds);
+	
+	public List<Role> getRoleList();
 }

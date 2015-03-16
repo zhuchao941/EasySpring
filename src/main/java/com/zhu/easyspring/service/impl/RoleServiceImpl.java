@@ -31,4 +31,9 @@ public class RoleServiceImpl implements RoleService {
 		return roleMapper.selectByExample(example);
 	}
 
+	@Override
+	public List<Role> getRoleList() {
+		return roleMapper.selectByExample(new RoleExample());
+	}
+
 }
