@@ -1,36 +1,44 @@
 package com.zhu.easyspring.service.impl;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Resource;
-
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authc.credential.PasswordService;
 import org.springframework.stereotype.Service;
 
+import com.zhu.easyspring.constant.ResourceType;
 import com.zhu.easyspring.dao.UserMapper;
+import com.zhu.easyspring.dto.MenuBean;
 import com.zhu.easyspring.dto.UserPreferences;
+import com.zhu.easyspring.entity.Resource;
 import com.zhu.easyspring.entity.Role;
 import com.zhu.easyspring.entity.User;
 import com.zhu.easyspring.entity.UserExample;
+import com.zhu.easyspring.service.ResourceService;
 import com.zhu.easyspring.service.RoleService;
 import com.zhu.easyspring.service.UserService;
+import com.zhu.easyspring.utils.ArrayUtils;
+import com.zhu.easyspring.utils.CollectionUtils;
 import com.zhu.easyspring.utils.StringUtils;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
-	@Resource
+	@javax.annotation.Resource
 	private UserMapper userMapper;
 
-	@Resource
+	@javax.annotation.Resource
 	private PasswordService passwordService;
 
-	@Resource
+	@javax.annotation.Resource
 	private RoleService roleService;
+
+	@javax.annotation.Resource
+	private ResourceService resourceService;
 
 	@Override
 	public boolean register(User user) {
@@ -68,8 +76,7 @@ public class UserServiceImpl implements UserService {
 			return null;
 		}
 		Set<String> roles = null;
-		Integer[] ids = Arrays.asList(user.getRoleIds().split(",")).toArray(
-				new Integer[0]);
+		Integer[] ids = ArrayUtils.parse(user.getRoleIds().split(","));
 		for (Integer id : ids) {
 			Role role = roleService.getRoleById(id);
 			if (roles == null) {
@@ -87,19 +94,66 @@ public class UserServiceImpl implements UserService {
 			return null;
 		}
 		Set<String> permissions = null;
-		Integer[] ids = Arrays.asList(user.getRoleIds().split(",")).toArray(
-				new Integer[0]);
+		Integer[] ids = ArrayUtils.parse(user.getRoleIds().split(","));
 		for (Integer id : ids) {
 			Role role = roleService.getRoleById(id);
 			if (StringUtils.isNotEmpty(role.getPermissionIds())) {
 				if (permissions == null) {
 					permissions = new HashSet<String>();
 				}
-				permissions.addAll(Arrays.asList(role.getPermissionIds().split(
-						",")));
+				Integer[] permissionIds = ArrayUtils.parse(role
+						.getPermissionIds().split(","));
+				for (Integer permissionId : permissionIds) {
+					Resource resource = resourceService
+							.getResourceById(permissionId);
+					permissions.add(resource.getCode());
+				}
 			}
 		}
 		return permissions;
+	}
+
+	@Override
+	public List<MenuBean> getMenus(String username) {
+		User user = getUserByUsername(username);
+		if (user == null || StringUtils.isEmpty(user.getRoleIds())) {
+			return null;
+		}
+		List<MenuBean> menus = null;
+		Map<Integer, MenuBean> menusMap = new HashMap<Integer, MenuBean>();
+		Integer[] roleIds = ArrayUtils.parse(user.getRoleIds().split(","));
+		List<Role> roles = roleService.getRoleList(roleIds);
+		for (Role role : roles) { // role
+			if (StringUtils.isNotEmpty(role.getPermissionIds())) {
+				Integer[] permissionIds = ArrayUtils.parse(role
+						.getPermissionIds().split(","));
+				List<Resource> resources = resourceService
+						.getAvaliableResources(permissionIds);
+				for (Resource resource : resources) { // permission
+					if (resource.getType()
+							.equals(ResourceType.Panel.toString())) {
+						if (menus == null) {
+							menus = new ArrayList<MenuBean>();
+						}
+						MenuBean menuBean = new MenuBean();
+						menuBean.setHead(resource);
+						menusMap.put(resource.getId(), menuBean);
+						menus.add(menuBean);
+					} else if (resource.getType().equals(
+							ResourceType.Menu.toString())) {
+						MenuBean menu = menusMap.get(resource.getParent());
+						if(menu == null){
+							continue;
+						}
+						if (menu.getSubMenus() == null) {
+							menu.setSubMenus(new ArrayList<Resource>());
+						}
+						menu.getSubMenus().add(resource);
+					}
+				}
+			}
+		}
+		return menus;
 	}
 
 }
