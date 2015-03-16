@@ -11,14 +11,17 @@
 			<th data-options="field:'status',width:60,align:'center'">
 				状态
 			</th>
+			<th data-options="field:'roleIds',width:60,align:'center'">
+				角色
+			</th>
 		</tr>
 	</thead>
 </table>
 
 <div id="user-tb">
-        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUser()">New User</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editUser()">Edit User</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyUser()">Remove User</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUser()">New User</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editUser()">Edit User</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyUser()">Remove User</a>
 </div>
 
 <div id="user-dialog" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
