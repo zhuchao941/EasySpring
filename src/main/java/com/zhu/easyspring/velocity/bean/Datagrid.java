@@ -8,6 +8,7 @@ public class Datagrid {
 	private String title; // datagrid标题
 	private String dataoptions;
 	private List<Field> fields;
+	private ToolBar tb = new ToolBar();
 
 	public String getPrefix() {
 		return prefix;
@@ -45,6 +46,15 @@ public class Datagrid {
 		return this;
 	}
 
+	public ToolBar getTb() {
+		return tb;
+	}
+
+	public Datagrid setTb(ToolBar tb) {
+		this.tb = tb;
+		return this;
+	}
+	
 	public Datagrid addField(String text, String dataoptions) {
 		Field field = new Field();
 		field.setText(text);
@@ -56,4 +66,8 @@ public class Datagrid {
 		return this;
 	}
 
+	@Override
+	public String toString() {
+		return null;
+	}
 }
