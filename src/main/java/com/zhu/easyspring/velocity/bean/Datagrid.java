@@ -9,6 +9,7 @@ public class Datagrid {
 	private String dataoptions;
 	private List<Field> fields;
 	private ToolBar tb = new ToolBar();
+	private String clazz = "easyui-datagrid";
 
 	public String getPrefix() {
 		return prefix;
@@ -55,6 +56,15 @@ public class Datagrid {
 		return this;
 	}
 	
+	public String getClazz() {
+		return clazz;
+	}
+
+	public Datagrid setClazz(String clazz) {
+		this.clazz = clazz;
+		return this;
+	}
+
 	public Datagrid addField(String text, String dataoptions) {
 		Field field = new Field();
 		field.setText(text);
