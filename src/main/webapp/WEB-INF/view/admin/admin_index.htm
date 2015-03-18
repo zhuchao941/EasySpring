@@ -20,7 +20,7 @@
             <div class="easyui-accordion" data-options="fit:true,border:false">
             	#set($onlyone = $!menus.size())
             	#foreach($menu in $!menus)
-                <div title="$!menu.head.name" data-options="#if($!onlyone == 1)fit:true,collapsible:false#end" style="padding:10px;"><!-- 每一个div都是accordion中依赖的panel -->
+                <div title="#if($!onlyone > 1)$!menu.head.name#end" data-options="#if($!onlyone == 1)fit:true,collapsible:false#end" style="padding:10px;"><!-- 每一个div都是accordion中依赖的panel -->
                 	<ul class="westBar" id="$!menu.head.code">
                 		#foreach($sub in $!menu.subMenus)
 						<li id="$!sub.code">#menuIcon("$!sub.icon")$!sub.name</li>
