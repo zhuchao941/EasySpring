@@ -3,7 +3,7 @@
 #end
 
 #macro(datagrid $datagrid)
-	<table id="$!{datagrid.prefix}-datagrid" class="easyui-datagrid" title="$!{datagrid.title}"
+	<table id="$!{datagrid.prefix}-datagrid" class="$!{datagrid.clazz}" title="$!{datagrid.title}"
 		data-options="$!{datagrid.dataoptions}">
 		<thead>
 			<tr>
