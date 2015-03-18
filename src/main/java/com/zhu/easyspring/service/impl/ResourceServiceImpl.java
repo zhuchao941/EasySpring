@@ -9,6 +9,7 @@ import com.zhu.easyspring.dao.ResourceMapper;
 import com.zhu.easyspring.entity.Resource;
 import com.zhu.easyspring.entity.ResourceExample;
 import com.zhu.easyspring.service.ResourceService;
+import com.zhu.easyspring.velocity.bean.DatagridData;
 
 @Service("resourceService")
 public class ResourceServiceImpl implements ResourceService {
@@ -28,6 +29,16 @@ public class ResourceServiceImpl implements ResourceService {
 				.andAvaliableEqualTo(1);
 		example.setOrderByClause("id");
 		return resourceMapper.selectByExample(example);
+	}
+
+	@Override
+	public DatagridData getResourceTree() {
+		ResourceExample example = new ResourceExample();
+		List<Resource> resourceList = resourceMapper.selectByExample(example);
+		DatagridData datagridData = new DatagridData();
+		datagridData.setRows(resourceList);
+		datagridData.setTotal(resourceList.size());
+		return datagridData;
 	}
 
 }
