@@ -14,7 +14,9 @@ import com.zhu.easyspring.dto.MenuBean;
 import com.zhu.easyspring.dto.UserPreferences;
 import com.zhu.easyspring.entity.Role;
 import com.zhu.easyspring.entity.User;
+import com.zhu.easyspring.service.ResourceService;
 import com.zhu.easyspring.service.UserService;
+import com.zhu.easyspring.velocity.bean.DatagridData;
 
 @Controller
 @RequestMapping("/admin")
@@ -22,6 +24,9 @@ public class AdminController extends BaseController {
 
 	@javax.annotation.Resource
 	private UserService userService;
+	
+	@javax.annotation.Resource
+	private ResourceService resourceService;
 
 	@RequestMapping("/adminIndex")
 	public String adminIndex(HttpSession session, Model model) {
@@ -53,5 +58,16 @@ public class AdminController extends BaseController {
 	@ResponseBody
 	public List<Role> getRoleList() {
 		return userService.getRoleList();
+	}
+	
+	@RequestMapping("/adminResource")
+	public String adminResource() {
+		return "admin/admin_resource";
+	}
+	
+	@RequestMapping("/getResourceList")
+	@ResponseBody
+	public DatagridData getResourceList() {
+		return resourceService.getResourceTree();
 	}
 }
